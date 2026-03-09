@@ -7,7 +7,7 @@ A lightweight, responsive, and user-friendly authentication interface. This proj
 [🚀 Click Here to Use Calculator](https://mdrajatech03.github.io/Login-and-Register-Page/)
 ## 🚀 Key Features
 
-* **Responsive Layout:** Fully optimized for mobile, tablet, and desktop screens using CSS Flexbox/Grid.
+* **Responsive Layout:** Fully optimized for tablet and desktop screens using CSS Flexbox/Grid.
 * **Smooth Transitions:** Interactive UI with elegant transitions between the Login and Sign-up forms.
 * **Client-Side Validation:** Basic form handling to ensure data integrity before submission.
 * **Clean Architecture:** Well-organized folder structure and commented code for easy customization.
