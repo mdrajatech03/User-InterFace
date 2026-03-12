@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fully Responsive Tech Portal</title>
+    <title>Professional Tech Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <canvas id="particleCanvas"></canvas>
 
     <header>
         <h2 class="logo">RAJA<span>TECH</span></h2>
@@ -25,19 +21,16 @@
     </header>
 
     <div class="wrapper">
-        <div class="window-controls">
-            <span class="icon-minimize"><i class="fa-solid fa-minus"></i></span>
-            <span class="icon-close"><i class="fa-solid fa-xmark"></i></span>
-        </div>
+        <span class="icon-close"><i class="fa-solid fa-xmark"></i></span>
 
         <div class="form-container">
             <div class="form-box login">
                 <h2>Login</h2>
-                <form id="loginForm">
+                <form action="#">
                     <div class="input-group">
                         <label>Email</label>
                         <div class="field">
-                            <input type="email" id="logEmail" placeholder="example@gmail.com" required>
+                            <input type="email" placeholder="example@gmail.com" required>
                             <i class="fa-solid fa-envelope"></i>
                         </div>
                     </div>
@@ -50,38 +43,38 @@
                     </div>
                     <button type="submit" class="btn">Login</button>
                     <div class="login-register">
-                        <p>New here? <a href="#" class="register-link">Register</a></p>
+                        <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
                     </div>
                 </form>
             </div>
 
             <div class="form-box register">
-                <h2>Register</h2>
-                <form id="regForm">
+                <h2>Registration</h2>
+                <form action="#">
                     <div class="input-group">
                         <label>Username</label>
                         <div class="field">
-                            <input type="text" id="regUser" placeholder="Username" required>
+                            <input type="text" placeholder="Enter username" required>
                             <i class="fa-solid fa-user"></i>
                         </div>
                     </div>
                     <div class="input-group">
                         <label>Email</label>
                         <div class="field">
-                            <input type="email" id="regEmail" placeholder="Email" required>
+                            <input type="email" placeholder="example@gmail.com" required>
                             <i class="fa-solid fa-envelope"></i>
                         </div>
                     </div>
                     <div class="input-group">
                         <label>Password</label>
                         <div class="field">
-                            <input type="password" id="regPass" placeholder="Password" required>
+                            <input type="password" id="regPass" placeholder="Create password" required>
                             <i class="fa-solid fa-eye-slash toggle-password" data-target="regPass"></i>
                         </div>
                     </div>
                     <button type="submit" class="btn">Register</button>
                     <div class="login-register">
-                        <p>Have an account? <a href="#" class="login-link">Login</a></p>
+                        <p>Already have an account? <a href="#" class="login-link">Login</a></p>
                     </div>
                 </form>
             </div>
@@ -91,5 +84,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-
