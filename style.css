@@ -45,9 +45,9 @@ header {
 
 /* ================== MOBILE MODE FIX ================== */
 @media (max-width: 768px) {
-    header { flex-direction: column; padding: 15px 5%; }
+    header { flex-direction: column; padding: 15px 2%; }
     .navigation { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-    .navigation a { margin-left: 0; font-size: 0.9em; }
+    .navigation a { margin-left: 0; font-size: 1em; }
     .btnLogin-popup { margin-left: 0; }
 
     .wrapper { width: 90%; margin-top: 120px; height: auto; min-height: 450px; }
@@ -63,4 +63,5 @@ header {
     .wrapper.active .form-box.login { display: none; }
     .wrapper.active .form-box.register { display: block; transform: none; }
 }
+
 
