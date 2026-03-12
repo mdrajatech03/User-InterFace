@@ -1,112 +1,65 @@
-* {
-    margin: 0; padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #050a0f; overflow-x: hidden; }
 
-body {
-    display: flex; justify-content: center; align-items: center;
-    min-height: 100vh; background: #050a0f; overflow-x: hidden;
-}
-
-/* --- Navigation --- */
 header {
-    position: fixed; top: 0; width: 100%;
-    padding: 20px 10%; display: flex;
-    justify-content: space-between; align-items: center;
-    z-index: 100; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px);
+    position: fixed; top: 0; width: 100%; padding: 20px 10%;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px);
 }
-
-.logo { font-size: 1.8em; color: #fff; text-decoration: none; font-weight: 700; }
+.logo { font-size: 1.8em; color: #fff; font-weight: 700; }
 .logo span { color: #00f2fe; }
+.navigation a { color: #fff; text-decoration: none; font-weight: 500; margin-left: 25px; }
+.btnLogin-popup { width: 110px; height: 45px; background: transparent; border: 2px solid #00f2fe; border-radius: 30px; color: #fff; cursor: pointer; margin-left: 25px; }
 
-.navigation a {
-    font-size: 1.1em; color: #fff; text-decoration: none;
-    font-weight: 500; margin-left: 25px; transition: .3s;
-}
-
-.navigation a:hover { color: #00f2fe; }
-
-.btnLogin-popup {
-    width: 100px; height: 40px; background: transparent;
-    border: 2px solid #00f2fe; border-radius: 20px;
-    color: #fff; font-weight: 600; cursor: pointer;
-    margin-left: 25px; transition: .5s;
-}
-
-/* --- Wrapper & Sliding Logic --- */
+/* Wrapper - Centered and Responsive */
 .wrapper {
-    position: relative; width: 400px; height: 450px;
+    position: relative; width: 400px; height: 440px;
     background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px; backdrop-filter: blur(20px);
-    display: flex; overflow: hidden; transform: scale(0);
-    transition: transform .5s ease, height .3s ease;
-    margin-top: 80px; /* Top clipping fix */
+    display: flex; align-items: center; overflow: hidden;
+    transform: scale(0); transition: transform .5s, height .3s;
 }
-
 .wrapper.active-popup { transform: scale(1); }
 .wrapper.active { height: 550px; }
 
-.form-container {
-    display: flex; width: 800px; /* Two forms space */
-    transition: transform 0.5s ease;
-}
+.form-box { width: 100%; padding: 40px; transition: transform .5s ease; }
 
-.wrapper.active .form-container { transform: translateX(-400px); }
+/* Desktop Sliding */
+.form-box.login { transform: translateX(0); }
+.wrapper.active .form-box.login { transform: translateX(-400px); }
 
-.form-box { width: 400px; padding: 40px; }
-.form-box h2 { font-size: 2em; color: #fff; text-align: center; margin-bottom: 20px; }
+.form-box.register { position: absolute; transform: translateX(400px); }
+.wrapper.active .form-box.register { transform: translateX(0); }
 
-/* --- Input Groups Fix --- */
+/* Inputs */
 .input-group { margin-bottom: 20px; }
-.input-group label { display: block; color: #fff; margin-bottom: 8px; font-size: 0.9em; }
+.input-group label { color: #fff; font-size: 0.9em; display: block; margin-bottom: 5px; }
+.field { position: relative; }
+.field input { width: 100%; height: 45px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 40px 0 15px; color: #fff; outline: none; }
+.field i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #fff; cursor: pointer; }
 
-.field { position: relative; width: 100%; }
-.field input {
-    width: 100%; height: 45px; background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px;
-    padding: 0 45px 0 15px; color: #fff; outline: none;
-}
-
-.field i {
-    position: absolute; right: 15px; top: 50%;
-    transform: translateY(-50%); color: #fff; cursor: pointer;
-}
-
-.btn {
-    width: 100%; height: 45px; background: #00f2fe;
-    border: none; border-radius: 8px; cursor: pointer;
-    font-size: 1.1em; font-weight: 600; margin-top: 10px;
-}
-
-.icon-close {
-    position: absolute; top: 0; right: 0;
-    width: 45px; height: 45px; background: #00f2fe;
-    display: flex; justify-content: center; align-items: center;
-    border-bottom-left-radius: 20px; cursor: pointer; z-index: 1;
-}
-
-.login-register { text-align: center; color: #fff; font-size: 0.9em; margin-top: 15px; }
+.btn { width: 100%; height: 45px; background: #00f2fe; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; margin-top: 10px; }
+.icon-close { position: absolute; top: 0; right: 0; width: 45px; height: 45px; background: #00f2fe; display: flex; justify-content: center; align-items: center; border-bottom-left-radius: 20px; cursor: pointer; z-index: 10; }
+.login-register { text-align: center; color: #fff; margin-top: 20px; font-size: 0.9em; }
 .login-register a { color: #00f2fe; text-decoration: none; font-weight: 600; }
 
-/* ======================================================
-   MOBILE PROFESSIONAL MODE (No Overlap Fix)
-   ====================================================== */
+/* ================== MOBILE MODE FIX ================== */
 @media (max-width: 768px) {
-    header { padding: 15px 5%; flex-direction: column; }
-    .navigation { margin-top: 15px; gap: 10px; display: flex; flex-wrap: wrap; justify-content: center; }
+    header { flex-direction: column; padding: 15px 2%; }
+    .navigation { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
     .navigation a { margin-left: 0; font-size: 0.9em; }
-    .btnLogin-popup { margin-left: 0; width: 90px; }
+    .btnLogin-popup { margin-left: 0; }
 
-    .wrapper { width: 90%; height: auto; min-height: 480px; margin-top: 120px; }
+    .wrapper { width: 90%; margin-top: 120px; height: auto; min-height: 450px; }
+    .wrapper.active { height: auto; }
+
+    /* CRITICAL: Disable sliding on mobile to stop content cutting off */
+    .form-box { position: relative; transform: none !important; padding: 25px; }
     
-    /* Mobile par sliding glitch rokne ke liye simple toggle */
-    .form-container { width: 100%; transform: none !important; }
-    .form-box { width: 100%; padding: 25px; }
-
-    /* Show/Hide Logic for Mobile */
-    .form-box.register { display: none; position: relative; }
+    /* Show Login, Hide Register by default */
+    .form-box.register { display: none; }
+    
+    /* When active, Hide Login, Show Register */
     .wrapper.active .form-box.login { display: none; }
-    .wrapper.active .form-box.register { display: block; }
+    .wrapper.active .form-box.register { display: block; transform: none; }
 }
-
