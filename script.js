@@ -78,16 +78,23 @@ if (loginForm) {
     });
 }
 
-// --- Logout Logic ---
+// --- Logout Logic Fix ---
 const btnLogout = document.getElementById('btnLogout');
 if (btnLogout) {
     btnLogout.onclick = () => {
         signOut(auth).then(() => {
             showToast('info', 'Logged Out!');
-            setTimeout(() => { window.location.href = "login.html"; }, 1500);
+            setTimeout(() => {
+                // Agar aapka login page 'index.html' hai, toh yahan wahi likhein
+                // GitHub Pages par case-sensitive hota hai, isliye dhyan dein
+                window.location.href = "index.html"; 
+            }, 1500);
+        }).catch((error) => {
+            console.error("Logout Error:", error);
         });
     };
 }
+
 
 // --- Security Check (Route Protection) ---
 onAuthStateChanged(auth, (user) => {
