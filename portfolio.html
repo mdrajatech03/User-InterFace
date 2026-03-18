@@ -3,169 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | RAJATECH Premium Ecosystem</title>
+    <title>Dashboard | RAJATECH Elite</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
-        /* Dashboard Specific Premium CSS */
-        .dash-body {
-            display: flex; flex-direction: column; justify-content: flex-start;
-            background: radial-gradient(circle at top right, #1e293b, #050816);
-            padding-top: 100px;
-        }
-
-        .dash-container {
-            width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px;
-            display: flex; justify-content: center;
-        }
-
+        .dash-body { background: #020617; color: #fff; min-height: 100vh; padding: 100px 20px 20px; }
         .profile-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            width: 100%; max-width: 500px;
-            padding: 40px; text-align: center;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            animation: fadeInDown 0.8s ease;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 242, 254, 0.2);
+            backdrop-filter: blur(15px); border-radius: 30px; width: 100%; max-width: 400px;
+            margin: 0 auto; padding: 40px; text-align: center; box-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
+        }
+        .avatar-zone { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; }
+        #userDP { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #00f2fe; }
+        #fileInput { display: none; }
+        .upload-label {
+            position: absolute; bottom: 0; right: 0; background: #00f2fe; color: #000;
+            width: 35px; height: 35px; border-radius: 50%; display: flex; 
+            justify-content: center; align-items: center; cursor: pointer; font-weight: bold;
         }
 
-        .profile-header { position: relative; margin-bottom: 25px; }
-
-        .avatar-wrapper {
-            width: 130px; height: 130px; margin: 0 auto 15px;
-            border-radius: 50%; border: 4px solid #00f2fe;
-            overflow: hidden; box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+        .btn-action {
+            width: 100%; padding: 14px; border-radius: 15px; border: none;
+            font-weight: 700; cursor: pointer; margin-top: 15px; transition: 0.3s;
         }
+        .btn-view { background: linear-gradient(45deg, #00f2fe, #0072ff); color: #fff; }
+        .btn-logout { background: transparent; border: 2px solid #ff4757; color: #ff4757; margin-top: 10px; }
 
-        #userDP { width: 100%; height: 100%; object-fit: cover; }
-
-        .status-tag {
-            position: absolute; top: 10px; right: 10px;
-            background: #00f2fe; color: #0f172a;
-            padding: 3px 10px; border-radius: 20px;
-            font-size: 0.7rem; font-weight: 700;
+        /* ID MODAL (Preview Page) */
+        .id-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 2000; justify-content: center; align-items: center;
+            flex-direction: column; overflow-y: auto; padding: 20px;
         }
+        .id-modal.active { display: flex; }
 
-        #userName { font-size: 1.8rem; color: #fff; margin-bottom: 5px; }
-        #userEmail { color: #94a3b8; font-size: 0.95rem; margin-bottom: 25px; }
-
-        .info-panel {
-            background: rgba(15, 23, 42, 0.4);
-            border-radius: 15px; padding: 15px; text-align: left;
-            margin-bottom: 30px; font-size: 0.9rem;
+        /* CYBERPUNK ID DESIGN (Inside Modal) */
+        #idCardContent {
+            width: 350px; height: 550px; background: #050816; border-radius: 25px;
+            border: 2px solid #00f2fe; position: relative; padding: 30px; text-align: center;
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.3);
         }
-        .info-panel p { color: #64748b; margin-bottom: 5px; }
-        .info-panel span { color: #fff; font-weight: 500; }
+        .id-logo { font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: 3px; margin-bottom: 20px; }
+        .id-logo span { color: #00f2fe; }
+        .id-photo-frame { width: 140px; height: 140px; margin: 0 auto 15px; border: 2px solid #00f2fe; border-radius: 15px; padding: 5px; }
+        #idPhoto { width: 100%; height: 100%; border-radius: 10px; object-fit: cover; }
+        .id-name { font-size: 1.6rem; color: #fff; font-weight: 700; }
+        .id-email { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
+        
+        #idQRCode { background: white; padding: 5px; width: 80px; height: 80px; margin: 0 auto 15px; border-radius: 5px; }
+        #idQRCode img { width: 100% !important; height: 100% !important; }
 
-        /* Update Image Section */
-        .update-section { text-align: left; margin-bottom: 30px; }
-        .update-section h3 { font-size: 1rem; color: #fff; margin-bottom: 15px; }
+        .id-footer-line { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 20px; padding-top: 15px; font-size: 0.6rem; color: #475569; }
 
-        .input-group { display: flex; gap: 10px; flex-direction: column; }
-        .input-group input {
-            padding: 12px; background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
-            color: #fff; font-size: 0.9rem;
-        }
-        .btn-update {
-            background: transparent; border: 1px solid #00f2fe;
-            color: #00f2fe; font-weight: 600; cursor: pointer;
-            transition: 0.3s;
-        }
-        .btn-update:hover { background: #00f2fe; color: #0f172a; }
-
-        /* Buttons Fix */
-        .dash-btns { display: flex; gap: 15px; margin-top: 30px; }
-        .btn-dash {
-            flex: 1; padding: 12px; border: none; border-radius: 10px;
-            font-weight: 700; cursor: pointer; transition: 0.3s;
-        }
-        .btn-refresh { background: rgba(255,255,255,0.1); color: #fff; }
-        .btn-refresh:hover { background: rgba(255,255,255,0.2); }
-
-        .btn-logout { background: #ff4757; color: #fff; }
-        .btn-logout:hover { background: #ff6b81; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4); }
-
-        /* Header Fix for Logout Button */
-        .dash-header {
-            position: fixed; top: 0; left: 0; width: 100%; padding: 20px 8%;
-            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .logo { font-size: 1.5rem; color: #fff; }
-        .logo span { color: #00f2fe; }
-        .nav-logout {
-            padding: 8px 20px; background: #ff4757; color: #fff;
-            border: none; border-radius: 10px; font-weight: 700; cursor: pointer;
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 600px) {
-            .profile-card { padding: 30px 20px; }
-            #userName { font-size: 1.5rem; }
-        }
+        .modal-btns { display: flex; gap: 10px; width: 350px; margin-top: 20px; }
+        .btn-dl { flex: 1; background: #00f2fe; color: #000; padding: 12px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; }
+        .btn-close { flex: 1; background: #ff4757; color: #fff; padding: 12px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body class="dash-body">
 
-    <header class="dash-header">
-        <h2 class="logo">RAJA<span>TECH</span></h2>
-        <button id="navLogoutBtn" class="nav-logout">Logout</button>
+    <header class="main-header" style="position: fixed; top:0; width:100%; padding:20px 8%; display:flex; justify-content:space-between; align-items:center; background:rgba(2,6,23,0.9); z-index:1500;">
+        <h2 style="color:#fff">RAJA<span style="color:#00f2fe">TECH</span></h2>
     </header>
 
-    <main class="dash-container">
-        <div class="profile-card">
-            <div class="profile-header">
-                <span class="status-tag">VERIFIED USER</span>
-                <div class="avatar-wrapper">
-                    <img id="userDP" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Picture">
-                </div>
-                <h1 id="userName">User Name</h1>
-                <p id="userEmail">user@example.com</p>
-            </div>
+    <div class="profile-card">
+        <div class="avatar-zone">
+            <img id="userDP" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+            <label for="fileInput" class="upload-label">✎</label>
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
+        <div class="user-info">
+            <h2 id="userName">...</h2>
+            <p id="userEmail">...</p>
+        </div>
+        <button class="btn-action btn-view" id="viewID">View Identity Card</button>
+        <button class="btn-action btn-logout" id="logoutBtn">Sign Out</button>
+    </div>
 
-            <div class="update-section">
-                <h3>Update Profile Picture</h3>
-                <div class="input-group">
-                    <input type="text" id="photoURL" placeholder="Paste Direct Image URL (jpg/png)">
-                    <button id="btnUpdate" class="btn-dash btn-update">Update Image Now</button>
-                </div>
-                <small style="color: #64748b; font-size: 0.8rem; margin-top: 10px; display: block;">
-                    Tip: Use direct links from ImgBB or postimages.org
-                </small>
+    <div class="id-modal" id="idModal">
+        <div id="idCardContent">
+            <div class="id-logo">RAJA<span>TECH</span></div>
+            <div class="id-photo-frame">
+                <img id="idPhoto" src="">
             </div>
-
-            <div class="info-panel">
-                <p>Status: <span>Active</span></p>
-                <p>Security Level: <span>High</span></p>
-            </div>
-
-            <div class="dash-btns">
-                <button id="btnRefresh" class="btn-dash btn-refresh">Refresh Stats</button>
-                <button id="btnLogout" class="btn-dash btn-logout">Secure Logout</button>
+            <h2 class="id-name" id="idCardName">...</h2>
+            <p class="id-email" id="idCardEmail">...</p>
+            
+            <div id="idQRCode"></div> <div class="id-footer-line">
+                <p>ELITE DIGITAL ACCESS CARD</p>
+                <p id="idUIDText" style="margin-top:5px;"></p>
             </div>
         </div>
-    </main>
 
-    <footer style="text-align: center; color: #475569; padding: 40px; font-size: 0.8rem;">
-        &copy; 2026 RAJATECH Premium Ecosystem. All Rights Reserved.
-    </footer>
+        <div class="modal-btns">
+            <button class="btn-dl" id="finalDownload">Download PNG</button>
+            <button class="btn-close" id="closeID">Back</button>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // --- Your Configuration ---
         const firebaseConfig = {
             apiKey: "AIzaSyCMwFJfbkdFjxWzNhMccXs9FbhqntSKdRM",
             authDomain: "portfolio-auth-19a5e.firebaseapp.com",
@@ -179,81 +122,75 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Toast Popup Helper
-        const toast = (icon, title) => {
-            Swal.fire({ icon, title, background: '#1e293b', color: '#fff', timer: 2000, showConfirmButton: false });
-        };
+        let qrGenerated = false;
 
-        // --- Core Dashboard Logic ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // User is signed in, fetch Firestore data
-                const userDocRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(userDocRef);
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
+                const userRef = doc(db, "users", user.uid);
+                const snap = await getDoc(userRef);
+                
+                if (snap.exists()) {
+                    const data = snap.data();
+                    const profileImg = data.profilePic || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
                     
-                    // 1. Display Real Name and Email
+                    // Dashboard Update
                     document.getElementById('userName').innerText = data.username;
                     document.getElementById('userEmail').innerText = data.email;
-                    
-                    // 2. Load Profile Image (if exists)
-                    if(data.profilePic) {
-                        document.getElementById('userDP').src = data.profilePic;
+                    document.getElementById('userDP').src = profileImg;
+
+                    // ID Card Data Update
+                    document.getElementById('idCardName').innerText = data.username;
+                    document.getElementById('idCardEmail').innerText = data.email;
+                    document.getElementById('idPhoto').src = profileImg;
+                    document.getElementById('idUIDText').innerText = "UID: " + user.uid;
+
+                    // QR Code Generation (Once)
+                    if(!qrGenerated) {
+                        new QRCode(document.getElementById("idQRCode"), {
+                            text: user.uid,
+                            width: 80, height: 80,
+                            colorDark : "#000000", colorLight : "#ffffff"
+                        });
+                        qrGenerated = true;
                     }
+                }
 
-                    // 3. Update Image Functionality
-                    document.getElementById('btnUpdate').onclick = async () => {
-                        const url = document.getElementById('photoURL').value.trim();
-                        
-                        if(url) {
-                            // Professional regex check for simple URL validation (optional but good)
-                            if(url.match(/\.(jpeg|jpg|gif|png)$/) != null || url.startsWith('https://')) {
-                                try {
-                                    await updateDoc(userDocRef, { profilePic: url });
-                                    toast('success', 'Profile Image Updated!');
-                                    setTimeout(() => location.reload(), 1500); // Reload to show new image
-                                } catch (err) { toast('error', 'Update Failed!'); }
-                            } else {
-                                toast('warning', 'Invalid image URL!');
-                            }
-                        } else { toast('warning', 'Please paste a URL!'); }
+                // Photo Change
+                document.getElementById('fileInput').onchange = (e) => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onloadend = async () => {
+                        const base64 = reader.result;
+                        document.getElementById('userDP').src = base64;
+                        document.getElementById('idPhoto').src = base64;
+                        await updateDoc(userRef, { profilePic: base64 });
+                        Swal.fire('Success', 'Profile Pic Updated!', 'success');
                     };
+                    if (file) reader.readAsDataURL(file);
+                };
 
-                    // 4. Refresh Button Functionality
-                    document.getElementById('btnRefresh').onclick = () => {
-                        toast('success', 'Refreshing Stats...');
-                        setTimeout(() => location.reload(), 1000);
-                    };
-
-                } else { console.log("No such document!"); }
-
-            } else {
-                // User is signed out, redirect to login
-                window.location.href = "index.html";
-            }
+            } else { window.location.href = "index.html"; }
         });
 
-        // --- Logout Functionality (Top Nav & Card Button) ---
-        const handleLogout = () => {
-            Swal.fire({
-                title: 'Logout?', text: "Are you sure you want to end session?",
-                icon: 'warning', showCancelButton: true, confirmButtonColor: '#ff4757',
-                cancelButtonColor: '#1e293b', confirmButtonText: 'Yes, Logout',
-                background: '#1e293b', color: '#fff'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    signOut(auth).then(() => {
-                        window.location.href = "index.html";
-                    });
-                }
+        // Modal Controls
+        document.getElementById('viewID').onclick = () => document.getElementById('idModal').classList.add('active');
+        document.getElementById('closeID').onclick = () => document.getElementById('idModal').classList.remove('active');
+
+        // Download Final Card
+        document.getElementById('finalDownload').onclick = () => {
+            const card = document.getElementById('idCardContent');
+            Swal.fire({ title: 'Downloading ID...', background:'#050816', color:'#fff', didOpen: () => Swal.showLoading() });
+
+            html2canvas(card, { scale: 3, useCORS: true, backgroundColor: "#050816" }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'RAJATECH_ID_CARD.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                Swal.close();
             });
         };
 
-        document.getElementById('btnLogout').onclick = handleLogout;
-        document.getElementById('navLogoutBtn').onclick = handleLogout;
-
+        document.getElementById('logoutBtn').onclick = () => signOut(auth);
     </script>
 </body>
 </html>
