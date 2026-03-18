@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAJATECH | Professional Auth</title>
+    <title>RAJATECH | Premium Auth</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 </head>
 <body>
-    <header>
+
+    <header class="main-header">
         <h2 class="logo">RAJA<span>TECH</span></h2>
+        
         <nav class="navigation">
             <a href="#">Home</a>
+            <a href="#">Service</a>
             <a href="#">About</a>
-            <a href="#">Services</a>
-            <button class="btnLogin-popup">Login</button>
         </nav>
+
+        <div class="header-right">
+            <button class="btnLogin-popup">Login</button>
+        </div>
     </header>
 
     <div class="wrapper">
@@ -35,15 +40,15 @@
                     <input type="password" id="logPass" required>
                     <label>Password</label>
                 </div>
-                <button type="submit" class="btn-main">Login Now</button>
+                <button type="submit" class="btn-main">Login</button>
                 <div class="login-register">
-                    <p>New here? <a href="#" class="register-link">Create Account</a></p>
+                    <p>New here? <a href="#" class="register-link">Register</a></p>
                 </div>
             </form>
         </div>
 
         <div class="form-box register">
-            <h2>Registration</h2>
+            <h2>Register</h2>
             <form id="registerForm">
                 <div class="input-box">
                     <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
@@ -53,16 +58,16 @@
                 <div class="input-box">
                     <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
                     <input type="email" id="regEmail" required>
-                    <label>Email Address</label>
+                    <label>Email ID</label>
                 </div>
                 <div class="input-box">
                     <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                     <input type="password" id="regPass" required>
-                    <label>Secure Password</label>
+                    <label>Password</label>
                 </div>
-                <button type="submit" class="btn-main">Register Me</button>
+                <button type="submit" class="btn-main">Create Account</button>
                 <div class="login-register">
-                    <p>Already a member? <a href="#" class="login-link">Sign In</a></p>
+                    <p>Member? <a href="#" class="login-link">Login</a></p>
                 </div>
             </form>
         </div>
