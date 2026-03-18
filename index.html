@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAJATECH | Final Fix</title>
+    <title>RAJATECH | Premium Auth</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -12,56 +12,45 @@
 
     <header class="main-header">
         <h2 class="logo">RAJA<span>TECH</span></h2>
-        <nav class="navigation">
-            <button class="btnLogin-popup" id="btnPopup">Login</button>
-        </nav>
+        <button class="btn-popup" id="openAuth">Login</button>
     </header>
 
-    <div class="wrapper" id="wrapper">
-        <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
+    <div class="wrapper" id="authWrapper">
+        <span class="icon-close" id="closeAuth"><ion-icon name="close-outline"></ion-icon></span>
 
-        <div class="form-box login">
+        <div id="loginSide" class="form-content">
             <h2>Login</h2>
             <form id="loginForm">
                 <div class="input-box">
-                    <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
                     <input type="email" id="logEmail" required placeholder=" ">
-                    <label>Email ID</label>
+                    <label>Email Address</label>
                 </div>
                 <div class="input-box">
-                    <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                     <input type="password" id="logPass" required placeholder=" ">
                     <label>Password</label>
                 </div>
-                <button type="submit" class="btn-main">Sign In</button>
-                <div class="login-register">
-                    <p>New user? <a href="#" class="register-link">Register</a></p>
-                </div>
+                <button type="submit" class="btn-submit">Sign In</button>
+                <p class="toggle-text">New here? <a href="#" id="showReg">Create Account</a></p>
             </form>
         </div>
 
-        <div class="form-box register">
+        <div id="registerSide" class="form-content" style="display: none;">
             <h2>Register</h2>
             <form id="registerForm">
                 <div class="input-box">
-                    <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                     <input type="text" id="regName" required placeholder=" ">
                     <label>Full Name</label>
                 </div>
                 <div class="input-box">
-                    <span class="icon"><ion-icon name="mail-outline"></ion-icon></span>
                     <input type="email" id="regEmail" required placeholder=" ">
                     <label>Email ID</label>
                 </div>
                 <div class="input-box">
-                    <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
                     <input type="password" id="regPass" required placeholder=" ">
                     <label>Password</label>
                 </div>
-                <button type="submit" class="btn-main">Create Account</button>
-                <div class="login-register">
-                    <p>Member? <a href="#" class="login-link">Login</a></p>
-                </div>
+                <button type="submit" class="btn-submit">Register Now</button>
+                <p class="toggle-text">Member? <a href="#" id="showLog">Login now</a></p>
             </form>
         </div>
     </div>
