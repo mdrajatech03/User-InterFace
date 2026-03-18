@@ -1,8 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// --- Your Configuration ---
 const firebaseConfig = {
     apiKey: "AIzaSyCMwFJfbkdFjxWzNhMccXs9FbhqntSKdRM",
     authDomain: "portfolio-auth-19a5e.firebaseapp.com",
@@ -23,35 +22,15 @@ const iconClose = document.querySelector('.icon-close');
 const registerLink = document.querySelector('.register-link');
 const loginLink = document.querySelector('.login-link');
 
-// Open/Close Popup
-if(btnPopup) {
-    btnPopup.onclick = () => {
-        wrapper.classList.add('active-popup');
-        wrapper.classList.remove('active'); // Start with Login
-    };
-}
+// Popup Controls
+if(btnPopup) btnPopup.onclick = () => { wrapper.classList.add('active-popup'); wrapper.classList.remove('active'); };
 if(iconClose) iconClose.onclick = () => wrapper.classList.remove('active-popup');
+if(registerLink) registerLink.onclick = () => wrapper.classList.add('active');
+if(loginLink) loginLink.onclick = () => wrapper.classList.remove('active');
 
-// Switch between Login & Register
-if(registerLink) {
-    registerLink.onclick = (e) => {
-        e.preventDefault();
-        wrapper.classList.add('active');
-    };
-}
-if(loginLink) {
-    loginLink.onclick = (e) => {
-        e.preventDefault();
-        wrapper.classList.remove('active');
-    };
-}
+const toast = (icon, title) => Swal.fire({ icon, title, background: '#1e293b', color: '#fff', timer: 2000, showConfirmButton: false });
 
-// Helper: Toast Popups
-const toast = (icon, title) => {
-    Swal.fire({ icon, title, background: '#1e293b', color: '#fff', timer: 2000, showConfirmButton: false });
-};
-
-// --- Firebase Registration ---
+// REGISTER LOGIC
 const regForm = document.getElementById('registerForm');
 if(regForm) {
     regForm.onsubmit = async (e) => {
@@ -62,25 +41,44 @@ if(regForm) {
 
         try {
             const res = await createUserWithEmailAndPassword(auth, email, pass);
-            await setDoc(doc(db, "users", res.user.uid), { username: name, email, uid: res.user.uid });
-            toast('success', 'Registration Done! Please Login.');
-            wrapper.classList.remove('active'); // Switch to login form
-        } catch (err) { toast('error', 'Registration Failed!'); }
+            await setDoc(doc(db, "users", res.user.uid), { username: name, email, uid: res.user.uid, profilePic: "" });
+            toast('success', 'Account Created! Now Login.');
+            
+            // FIX: Force switch to Login Box
+            setTimeout(() => { wrapper.classList.remove('active'); }, 500);
+            regForm.reset();
+        } catch (err) { toast('error', 'Error: ' + err.message); }
     };
 }
 
-// --- Firebase Login ---
+// LOGIN LOGIC
 const logForm = document.getElementById('loginForm');
 if(logForm) {
     logForm.onsubmit = async (e) => {
         e.preventDefault();
-        const email = document.getElementById('logEmail').value;
-        const pass = document.getElementById('logPass').value;
-
         try {
-            await signInWithEmailAndPassword(auth, email, pass);
-            toast('success', 'Logging in...');
+            await signInWithEmailAndPassword(auth, document.getElementById('logEmail').value, document.getElementById('logPass').value);
+            toast('success', 'Welcome Back!');
             setTimeout(() => { window.location.href = "portfolio.html"; }, 1500);
-        } catch (err) { toast('error', 'Wrong Email/Password!'); }
+        } catch (err) { toast('error', 'Invalid Credentials!'); }
     };
 }
+
+// PORTFOLIO DATA FETCH
+onAuthStateChanged(auth, async (user) => {
+    if (user && window.location.pathname.includes("portfolio.html")) {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+            const data = userDoc.data();
+            document.getElementById('userName').innerText = data.username;
+            document.getElementById('userEmail').innerText = data.email;
+            if(data.profilePic) document.getElementById('userDP').src = data.profilePic;
+        }
+    } else if (!user && window.location.pathname.includes("portfolio.html")) {
+        window.location.href = "index.html";
+    }
+});
+
+// LOGOUT
+const logoutBtn = document.getElementById('btnLogout');
+if(logoutBtn) logoutBtn.onclick = () => signOut(auth).then(() => window.location.href = "index.html");
