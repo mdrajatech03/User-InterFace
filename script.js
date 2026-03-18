@@ -15,24 +15,21 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Selectors
-const wrapper = document.getElementById('mainWrapper');
-const btnLoginPopup = document.getElementById('openLogin');
-const btnClose = document.getElementById('closeBtn');
-const toRegister = document.getElementById('toRegister');
-const toLogin = document.getElementById('toLogin');
+const wrapper = document.querySelector('.wrapper');
+const loginLink = document.querySelector('.login-link');
+const registerLink = document.querySelector('.register-link');
+const btnPopup = document.querySelector('.btnLogin-popup');
+const iconClose = document.querySelector('.icon-close');
 
-// UI Controls
-if(btnLoginPopup) btnLoginPopup.onclick = () => { wrapper.classList.add('active-popup'); wrapper.classList.remove('active'); };
-if(btnClose) btnClose.onclick = () => wrapper.classList.remove('active-popup');
+// Open/Close Popup
+btnPopup.onclick = () => { wrapper.classList.add('active-popup'); wrapper.classList.remove('active'); };
+iconClose.onclick = () => wrapper.classList.remove('active-popup');
 
-// Transition Fix
-if(toRegister) toRegister.onclick = () => wrapper.classList.add('active');
-if(toLogin) toLogin.onclick = () => wrapper.classList.remove('active');
+// Slide Switch Logic
+registerLink.onclick = (e) => { e.preventDefault(); wrapper.classList.add('active'); };
+loginLink.onclick = (e) => { e.preventDefault(); wrapper.classList.remove('active'); };
 
-const showAlert = (icon, title) => Swal.fire({ icon, title, background: '#1e293b', color: '#fff', timer: 2000, showConfirmButton: false });
-
-// Register Logic
+// Register Submit
 document.getElementById('registerForm').onsubmit = async (e) => {
     e.preventDefault();
     const name = document.getElementById('regName').value;
@@ -41,19 +38,17 @@ document.getElementById('registerForm').onsubmit = async (e) => {
 
     try {
         const res = await createUserWithEmailAndPassword(auth, email, pass);
-        await setDoc(doc(db, "users", res.user.uid), { username: name, email, uid: res.user.uid });
+        await setDoc(doc(db, "users", res.user.uid), { username: name, email: email, uid: res.user.uid });
         
-        showAlert('success', 'Registration Successful!');
+        Swal.fire({ icon: 'success', title: 'Registration Successful!', background: '#1e293b', color: '#fff', timer: 1500, showConfirmButton: false });
         
-        // FIX: Turant login form par switch karega
-        setTimeout(() => { 
-            wrapper.classList.remove('active'); 
-            document.getElementById('registerForm').reset();
-        }, 1500);
-    } catch (err) { showAlert('error', 'Registration Failed!'); }
+        // AUTO SWITCH TO LOGIN
+        document.getElementById('registerForm').reset();
+        setTimeout(() => { wrapper.classList.remove('active'); }, 1500);
+    } catch (err) { Swal.fire({ icon: 'error', title: 'Error', text: 'Registration failed or user exists!', background: '#1e293b', color: '#fff' }); }
 };
 
-// Login Logic
+// Login Submit
 document.getElementById('loginForm').onsubmit = async (e) => {
     e.preventDefault();
     const email = document.getElementById('logEmail').value;
@@ -61,7 +56,7 @@ document.getElementById('loginForm').onsubmit = async (e) => {
 
     try {
         await signInWithEmailAndPassword(auth, email, pass);
-        showAlert('success', 'Welcome Back! Redirecting...');
+        Swal.fire({ icon: 'success', title: 'Welcome Back!', background: '#1e293b', color: '#fff', timer: 1500, showConfirmButton: false });
         setTimeout(() => { window.location.href = "portfolio.html"; }, 1500);
-    } catch (err) { showAlert('error', 'Invalid Credentials!'); }
+    } catch (err) { Swal.fire({ icon: 'error', title: 'Oops...', text: 'Wrong Email or Password!', background: '#1e293b', color: '#fff' }); }
 };
